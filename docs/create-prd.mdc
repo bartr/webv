@@ -1,0 +1,37 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Rule: Generating a Product Requirements Document (PRD)
+
+## Goal
+
+To guide an AI assistant in creating a detailed Product Requirements Document (PRD) in Markdown format, based on an initial user prompt. The PRD should be clear, actionable, and suitable for a junior developer to understand and implement the feature.
+
+## Process
+
+1.  **Receive Initial Prompt:** The user provides a brief description or request for a new feature or functionality.
+2.  Use logical assumptions for any missing information.
+3.  **Generate PRD:** Based on the initial prompt, generate a PRD using the structure outlined below.
+4.  **Save PRD:** Save the generated document as `prd-[feature-name].md` inside the `/tasks` directory.
+
+## PRD Structure
+
+The generated PRD should use prd-template.md for formatting
+
+## Target Audience
+
+Assume the primary reader of the PRD is a **Technical Program Manager**
+- Requirements should be explicit, unambiguous, and avoid jargon where possible
+- Provide enough detail for them to understand the feature's purpose and core logic
+
+## Output
+
+*   **Format:** Markdown (`.md`)
+*   **Location:** `/tasks/`
+*   **Filename:** `prd-[feature-name].md`
+
+## Final instructions
+
+- Do NOT start implementing the PRD
