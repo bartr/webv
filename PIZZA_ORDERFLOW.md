@@ -1,0 +1,179 @@
+# Domino’s-Inspired Pizza Ordering Workflow
+
+
+- Order
+  - Order Method
+    - Delivery
+    - Carryout
+  - Product Selection Menu
+    - Build Your Own (Pizza)
+	    - See Recent Pizzas
+		    -This loads past user custom orders
+	    - Start From Scratch
+		    -This goes to Custom Pizza workflow
+    - Specialty Pizzas
+	    -Each Specialty Pizza shows the same Custom Pizza Workflow as a Build Your Own but with preselected toppings. Only added toppings show with a button to "add more toppings" expanding the full topping options list.
+	    - ExtravaganZZa
+	    - MeatZZa
+	    - Deluxe
+	    - Honolulu Hawaiian
+	    - Memphis BBQ Chicken
+	    - Pacific Veggie
+	    - Philly Cheese Steak
+	    - Spinach & Feta
+	    - Ultimate Pepperoni
+	    - Wisconsin 6 Cheese
+    - Breads
+	    - Parmesan Bread Bites
+	    - Stuffed Cheesy Bread
+    - Chicken
+	    - Loaded Chicken - Crispy Bacon & Tomato
+	    - Hot Buffalo Wings
+    - Desserts
+	    - Cinnamon Bread Bites
+	    - Chocolate Lava Crunch Cakes
+    - Oven-Baked Pastas
+	    - 5-Cheese Mac & Cheese
+    - Oven-Baked Sandwiches
+	    - Philly Cheese Steak
+    - Salads
+	    - Garden Salad
+    - Drinks
+	    - Coke
+    - Extras
+	    - Ranch Dipping Cup
+
+
+  - Custom Pizza Workflow
+    - Crust
+	    - Hand Tossed
+	    - Handmade Pan
+	    - Crunchy Thin Crust
+	    - New York Style Crust
+	    - Gluten Free Crust
+	    - Parmesan Stuffed Crust
+	- Size
+	    - Small
+	      - 10-inch
+	    - Medium
+	      - 12-inch
+	    - Large
+	      - 14-inch
+	    - Extra Large
+	      - 16-inch
+	- Crust Seasoning
+	    - Garlic Crust Seasoning
+	    - No Garlic Crust Seasoning
+	- Sauce
+	    - No Sauce
+	    - Light Sauce
+	    - Normal Sauce
+	    - Extra Sauce
+	    - Robust Inspired Tomato Sauce
+	    - Alfredo Sauce
+	    - Garlic Parmesan White Sauce
+	    - Honey BBQ Sauce
+	    - Hot Buffalo Sauce
+	    - Mild Buffalo Sauce
+	    - Buttermilk Ranch Sauce
+	    - Sweet Mango Habanero Sauce
+	- Cheese (Base)
+	    - No Cheese
+	    - Light Cheese
+	    - Normal Cheese
+	    - Extra Cheese
+	- Meats
+	    - Pepperoni
+	    - Italian Sausage
+	    - Beef
+	    - Ham
+	    - Bacon
+	    - Grilled Chicken / Premium Chicken
+	    - BBQ Chicken with Sauce
+	    - Philly Steak
+	    - Anchovies
+	- Veggies & More
+		  - Mushrooms
+	    - Onions
+	    - Green Bell Peppers
+	    - Black Olives
+	    - Banana Peppers
+	    - Jalapeño Peppers
+	    - Spinach
+	    - Diced Tomatoes
+	    - Pineapple
+	    - Hot Buffalo Sauce
+	- Add-On Cheeses
+	    - Provolone Cheese
+	    - Cheddar Cheese Blend
+	    - Feta Cheese
+	    - Parmesan-Asiago Cheese
+	- Special Instructions
+		- Bake Preferences
+			- Normal Bake
+			- Well Done
+		- Cut Preferences
+			- Pie Cut
+			- Square Cut
+			- Uncut
+	- Add Dipping Cups
+    - Garlic Dipping Sauce
+    - Marinara Dipping Sauce
+    - Ranch Dipping Sauce
+    - Hot Buffalo Dipping Sauce
+    - Sweet Mango Habanero Dipping Sauce
+    - Slice Sauce Dipping Cup
+
+
+Topping Customizations
+	Each topping selection has the following options
+	- Topping Amount
+	    - Light
+	    - Normal
+	    - Extra
+	- Topping Placement
+	    - Whole Pizza
+	    - Left Half
+	    - Right Half
+
+Add to Cart
+
+- Checkout
+	- Cart Confirmation
+		- Item
+		- Quantity (+/- buttons)
+		- Edit Button
+		- Delete Button
+		- Price
+		- Upsell Screens
+			- Choose Your Side
+			- Choose Your Drinks
+			- Choose Your Desserts
+			- Add Some Flavor
+				- Dips
+				- Parmesan Cheese Packets
+				- Red Pepper Flake Packets
+	- Go to Checkout
+		- Order/Customer  Info
+		    - Customer name
+		    - Phone number
+		    - Email Address
+		    - Delivery address, if delivery
+		    - Pickup Location and time
+			    - Store info link button
+	    - Payment method
+		    - Gift card (slider button to expand entry fields)
+		    - Apple Pay
+		    - Debit or Credit Card
+		    - Paze
+		    - Paypal
+		    - Venmo
+		    - Cash App Pay
+		    - Pay at Store
+	    - Order Summary
+		    - Number of items
+		    - Food and Beverage Cost
+		    - Tax Cost
+		    - Total Cost
+		- Place Order Button
+
