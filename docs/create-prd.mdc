@@ -14,7 +14,7 @@ To guide an AI assistant in creating a detailed Product Requirements Document (P
 1.  **Receive Initial Prompt:** The user provides a brief description or request for a new feature or functionality.
 2.  Use logical assumptions for any missing information.
 3.  **Generate PRD:** Based on the initial prompt, generate a PRD using the structure outlined below.
-4.  **Save PRD:** Save the generated document as `prd-[feature-name].md` inside the working directory.
+4.  **Save PRD:** Save the generated document as `[feature-name]-prd.md` inside the working directory.
 
 ## PRD Structure
 
@@ -30,7 +30,7 @@ Assume the primary reader of the PRD is a **Technical Program Manager**
 
 *   **Format:** Markdown (`.md`)
 *   **Location:** working directory
-*   **Filename:** `prd-[feature-name].md`
+*   **Filename:** `[feature-name]-prd.md`
 
 ## Final instructions
 
