@@ -1,0 +1,17 @@
+stateDiagram-v2
+    %% GENERATED from x-lifecycle of Version - do not edit
+    [*] --> draft
+    draft --> submitted: submit
+    submitted --> reviewed: startReview
+    reviewed --> approved: approve
+    reviewed --> draft: requestChanges
+    approved --> retired: retire [isApproved]
+    retired --> deleted: delete [notReferenced]
+    draft --> deleted: delete [notReferenced]
+    deleted --> [*]
+    note right of retired
+        notReferenced (cross): Cannot delete a version while an RFP still references it.
+    end note
+    note right of approved
+        isApproved (intra): Only an approved version can be retired.
+    end note

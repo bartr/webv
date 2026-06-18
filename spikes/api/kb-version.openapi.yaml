@@ -1,0 +1,75 @@
+openapi: 3.1.0
+info:
+  title: RFP Accelerator - Knowledge Base API (excerpt)
+  version: 0.1.0
+  description: >
+    Excerpt showing the x-lifecycle vendor extension on the KB answer Version
+    entity. The x-lifecycle block is the single authored source of truth for
+    the version lifecycle. Guard code, negative tests, and the Mermaid diagram
+    in the docs are all GENERATED from it - none are hand-maintained.
+
+components:
+  schemas:
+
+    Version:
+      type: object
+      description: A specific, versioned answer to a KB question.
+      required: [id, questionId, status, refcount]
+      properties:
+        id:
+          type: integer
+        questionId:
+          type: integer
+        status:
+          type: string
+          # NOTE: enum mirrors x-lifecycle.states exactly. The generator
+          # asserts they match; drift between them is a build error.
+          enum: [draft, submitted, reviewed, approved, retired, deleted]
+        refcount:
+          type: integer
+          minimum: 0
+          description: Number of RFPs currently referencing this version.
+
+      x-lifecycle:
+        states: [draft, submitted, reviewed, approved, retired, deleted]
+        initial: draft
+        terminal: [deleted]
+        guards:
+          - name: notReferenced
+            expression: "refcount == 0"
+            scope: cross
+            message: "Cannot delete a version while an RFP still references it."
+          - name: isApproved
+            expression: "status == approved"
+            scope: intra
+            message: "Only an approved version can be retired."
+        transitions:
+          - { from: draft,     to: submitted, "on": submit,
+              description: "Author submits the drafted answer for review." }
+          - { from: submitted, to: reviewed,  "on": startReview }
+          - { from: reviewed,  to: approved,  "on": approve }
+          - { from: reviewed,  to: draft,     "on": requestChanges,
+              description: "Reviewer kicks it back to the author." }
+          - { from: approved,  to: retired,   "on": retire, guard: isApproved,
+              description: "Soft-retire: blocks NEW references, keeps existing ones." }
+          # Hard delete is guarded by the cross-entity reference rule. This is
+          # the one transition whose guard a per-entity check cannot fully
+          # verify under concurrency - flagged via scope: cross.
+          - { from: retired,   to: deleted,   "on": delete, guard: notReferenced }
+          - { from: draft,     to: deleted,   "on": delete, guard: notReferenced,
+              description: "A never-referenced draft can be discarded outright." }
+
+paths:
+  /versions/{id}/transitions/{event}:
+    post:
+      summary: Apply a lifecycle event to a version
+      description: >
+        Generic transition endpoint. The set of legal (status, event) pairs is
+        defined entirely by Version.x-lifecycle; the server's generated guards
+        reject anything not listed there.
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+        - { name: event, in: path, required: true, schema: { type: string } }
+      responses:
+        "200": { description: Transition applied. }
+        "409": { description: Illegal transition or guard denied. }

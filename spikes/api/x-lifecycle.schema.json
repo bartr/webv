@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/x-lifecycle.schema.json",
+  "title": "x-lifecycle",
+  "description": "Canonical structure for the x-lifecycle OpenAPI vendor extension. Hung off a schema object, it declares the state machine governing that entity. It is intentionally declarative and complete: every legal transition is listed, and guards are structured data (never free text), so the same block can be compiled forward to guard code, negative tests, Mermaid diagrams, and (if ever needed) a formal model.",
+  "type": "object",
+  "required": ["states", "initial", "transitions"],
+  "additionalProperties": false,
+  "properties": {
+    "states": {
+      "description": "The complete set of lifecycle states. Should match the entity's status enum exactly.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/stateName" }
+    },
+    "initial": {
+      "description": "The state an entity occupies immediately after creation.",
+      "$ref": "#/$defs/stateName"
+    },
+    "terminal": {
+      "description": "States from which no further transition is allowed. Optional; used to assert no outgoing transitions exist and to render terminal markers.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/stateName" }
+    },
+    "transitions": {
+      "description": "The complete set of LEGAL transitions. Any (from,on) pair not listed is, by definition, illegal and will be asserted against in generated negative tests.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/transition" }
+    },
+    "guards": {
+      "description": "Named, structured preconditions referenced by transitions. Each guard is data, not prose, so it can be compiled to a code predicate and rendered as a diagram annotation.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/guard" }
+    }
+  },
+  "$defs": {
+    "stateName": {
+      "type": "string",
+      "pattern": "^[a-z][a-zA-Z0-9_]*$",
+      "description": "lowerCamel or snake identifier; must be usable as a code symbol."
+    },
+    "eventName": {
+      "type": "string",
+      "pattern": "^[a-z][a-zA-Z0-9_]*$",
+      "description": "The action/event that triggers the transition, e.g. submitForReview."
+    },
+    "transition": {
+      "type": "object",
+      "required": ["from", "to", "on"],
+      "additionalProperties": false,
+      "properties": {
+        "from": { "$ref": "#/$defs/stateName" },
+        "to": { "$ref": "#/$defs/stateName" },
+        "on": { "$ref": "#/$defs/eventName" },
+        "guard": {
+          "description": "Optional name of a guard in the top-level guards list. The transition is only permitted when the guard predicate holds.",
+          "type": "string"
+        },
+        "description": {
+          "description": "Human-readable note for docs. Rendered, never executed.",
+          "type": "string"
+        }
+      }
+    },
+    "guard": {
+      "type": "object",
+      "required": ["name", "expression"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "description": "Referenced by transition.guard and emitted as a predicate function name."
+        },
+        "expression": {
+          "description": "Structured boolean condition over entity fields and/or related-entity facts. Kept as a restricted expression string (single comparison or conjunction) so a generator can both render it and, later, compile it. NOT free-form English.",
+          "type": "string"
+        },
+        "scope": {
+          "description": "intra = depends only on this entity's own fields (cheaply enforceable by a guard at the transition). cross = depends on facts about OTHER entities/relationships (e.g. reference counts); flag for review because these are the rules a per-entity guard cannot fully verify under concurrency.",
+          "type": "string",
+          "enum": ["intra", "cross"],
+          "default": "intra"
+        },
+        "message": {
+          "description": "Denial message surfaced to users and used as the negative-test assertion label.",
+          "type": "string"
+        }
+      }
+    }
+  }
+}
