@@ -113,3 +113,21 @@ emitter at the same authored source.
 YAML 1.1 (PyYAML) coerces a bare `on:` key to boolean `true`. Quote it as
 `"on":` in your specs. The transpiler also recovers from the unquoted form
 defensively, but quoting is the clean fix.
+
+## Python Bootstrap
+
+Use the repo bootstrap script to set up a local virtual environment and install
+Python dependencies without modifying system Python.
+
+```bash
+cd ~/webv/spikes/api
+./bootstrap.sh
+source .venv/bin/activate
+```
+
+If virtual environment creation fails on Debian/Ubuntu, install venv support:
+
+```bash
+sudo apt install python3-venv
+```
+
