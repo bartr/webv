@@ -219,7 +219,7 @@ Valid only when `--run-loop` is set (some defaults also change in this mode):
   - `ENTRYPOINT ["/webv"]`; no `CMD` shell form.
   - Image is built with pinned digests for base images and dependencies; built artifacts are reproducible.
   - Image is scanned (e.g., `trivy`, `grype`) in the build script; build fails on HIGH/CRITICAL CVEs.
-- Image tag matches the semver, e.g., `webv:0.1.0`, `webv:0.2.0`, plus `webv:latest`.
+- Image tag matches the semver, e.g., `webv:0.1.0`, `webv:0.2.0`. The `:latest` tag is an anti-pattern and is not published; always reference a specific semver tag (the latest released version).
 - Test files live on a replaceable volume mounted **read-only** at `/tests`:
   - `WORKDIR /tests` and the default container command runs with `--files <file>` resolved against `/tests`.
   - Swap test suites by mounting a different host directory or named volume to `/tests` — no image rebuild required.
@@ -282,7 +282,7 @@ deploy/
     base/
       kustomization.yaml
       namespace.yaml         # namespace: webv (with restricted PSA labels)
-      deployment.yaml        # image: webv:latest; --run-loop; mounts /tests RO
+      deployment.yaml        # image: webv:0.2.0 (pinned semver, never :latest); --run-loop; mounts /tests RO
       service.yaml           # ClusterIP, port 8080, named port `http`
       configmap-tests.yaml   # YAML test files mounted at /tests
       servicemonitor.yaml    # Prometheus Operator scrape of /metrics
@@ -301,7 +301,7 @@ deploy/
     kustomization.yaml
 ```
 
-- `deploy/webv/base/` is a complete, self-contained Kustomization — it can be applied directly with `kubectl apply -k deploy/webv/base` and will deploy WebV using `webv:latest`.
+- `deploy/webv/base/` is a complete, self-contained Kustomization — it can be applied directly with `kubectl apply -k deploy/webv/base` and will deploy WebV using a pinned semver tag (e.g., `webv:0.2.0`, the latest released version — never `:latest`).
 - Overlays exist only to pin a specific semver (or apply version-specific patches); they do not add resources that the base is missing.
 - Each `webv` overlay only overrides `newTag` (plus any version-specific patches); all shared resources live in `webv/base/`.
 - Order of apply on a fresh cluster:
@@ -361,3 +361,13 @@ Deployment spec follows Pod Security Standards `restricted` profile:
   ```
 
 - Same image and manifests deploy to upstream Kubernetes; only the ingress class / TLS resolver differs if Traefik is not the cluster ingress.
+
+## Design Decisions
+
+- Protocols other than http or https
+- A GUI or web portal interface
+- Implementation language should be a statically typed language for performance and image size. Go is the preferred language. Rust and C++ are acceptable as well.
+- secrets are injected into the container via env vars
+- assume single replica per cluster - 10s scrape interval default
+- high volume load generation is a feature - using something like goroutines to run multiple execution threads per instance - use the --threads command line arg / env var; volume can further be achieved with scale out; --threads defaults to 1 and is an integer between 1:1000
+- docker image tags `:latest` are an anti-pattern - always deploy the latest released version, but reference it by its specific semver tag (e.g., `webv:0.2.0`), never `:latest`
